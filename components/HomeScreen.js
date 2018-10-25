@@ -1,16 +1,28 @@
 import React from 'react'
 import { Container, Header, Content, List, ListItem, Text, View, Body, Title } from 'native-base';
+import { connect } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import { fetchDecks } from '../utils/api'
+import { receiveDecks } from '../actions/index'
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'My Flash Card Decks'
   }
 
+  componentDidMount () {
+    const { dispatch } = this.props
+    fetchDecks()
+      .then((decks) => {
+        dispatch(receiveDecks(decks))
+      })
+  }
+
+
   render(){
     const { navigate } = this.props.navigation
-
+    const { decks } = this.props
     return (
       <Container>
         <Content padder>
@@ -19,15 +31,14 @@ class HomeScreen extends React.Component {
               <Ionicons name='md-add-circle' size={45}/>
               <Text> Add New Deck</Text>  
             </ListItem>
-            <ListItem onPress={() => navigate("Deck", {id: 1})}>
-              <Text>{`Name: Deck 1 \nCards: 52`}</Text>
-            </ListItem>
-            <ListItem onPress={() => navigate("Deck", {id: 2})}>
-              <Text>{`Name: Deck 2 \nCards: 12`}</Text>
-            </ListItem>
-            <ListItem onPress={() => navigate("Deck", {id: 3})}>
-              <Text>{`Name: Deck 3 \nCards: 12`}</Text>
-            </ListItem>
+            {Object.keys(decks).map((id) => {
+              const deck = decks[id]
+              return(
+                <ListItem onPress={() => navigate("Deck", {id: id})}>
+                  <Text>{`Name: ${deck.title} \nCards: ${deck.cards.length}`}</Text>
+                </ListItem>
+              )
+            })}
           </List>
         </Content>
       </Container>
@@ -35,4 +46,10 @@ class HomeScreen extends React.Component {
   }
 }
 
-export default HomeScreen
+function mapStateToProps(state){
+  return {
+    decks: state.decks ? state.decks : []
+  }
+}
+
+export default connect(mapStateToProps)(HomeScreen)

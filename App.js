@@ -31,9 +31,9 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(reducer)}>
-      <Fragment>
-        <MainNavigator/>
-      </Fragment>
+        <Fragment>
+          <MainNavigator/>
+        </Fragment>
       </Provider>
     );
   }
