@@ -14,13 +14,15 @@ function decks(state={}, action){
         }
       }
     case ADD_CARD :
-      debugger
+      const deckId = action.card.deckId
+      const decks = state.decks
+      const card = action.card.card
       return {
         decks: {
-          ...state.decks,
-          [action.deckId]:{
-            ...state.decks[action.deckId],
-            cards: [...state.decks[action.deckId].cards, ...action.newCard.cards]
+          ...decks,
+          [deckId]:{
+            ...decks[deckId],
+            cards: [...decks[deckId].cards, ...card]
           }
         }
       }

@@ -35,7 +35,7 @@ class HomeScreen extends React.Component {
               const deck = decks[id]
               return(
                 <ListItem key={id} onPress={() => navigate("Deck", {id: id, title: deck.title})}>
-                  <Text>{`Name: ${deck.title} \nCards: ${deck.cards.length}`}</Text>
+                  <Text>{`Name: ${deck.title} \nCards: ${deck.cards.length/2}`}</Text>
                 </ListItem>
               )
             })}

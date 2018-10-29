@@ -39,7 +39,7 @@ class NewCard extends React.Component{
                 }]
               }
     this.props.dispatch(addCard(newCard))
-    this.props.navigation.navigate.navigate("Deck", {id: deckId})
+    this.props.navigation.navigate("Deck", {id: deckId})
   }
 
   render(){
