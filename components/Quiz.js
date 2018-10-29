@@ -1,42 +1,17 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { QUESTION, ANSWER } from '../utils/api'
-
-import { Container, Header, View, DeckSwiper, Card, CardItem, Thumbnail, Text, Left, Right, Body, Icon, Content, Button, H1, H3, Row, Col, Grid} from 'native-base';
-
-
-
-const cards = [
-  {
-    num: 1,
-    header: QUESTION,
-    text: 'Card One Q',
-  },
-  {
-    num: 1,
-    header: ANSWER,
-    text: 'Card One A',
-  },
-  {
-    num: 2,
-    header: QUESTION,
-    text: 'Card Two Q',
-  },
-  {
-    num: 2,
-    header: ANSWER,
-    text: 'Card Two A',
-  },
-]
-
+import { Container, Header, View, DeckSwiper, Card, CardItem, Thumbnail, Text, Left, Right, Body, Icon, Content, Button, H1, H3, Row, Col, Grid} from 'native-base'
 
 class Quiz extends React.Component{
-  static navigationOptions = {
-    title: "Quiz 1"
+ static navigationOptions = ({navigation}) => {
+    return {
+      title: navigation.state.params.title
+    }
   }
 
   state = {
     curCardIndex: 0,
-    cards: cards,
     numberCorrect: 0,
   }
 
@@ -51,7 +26,6 @@ class Quiz extends React.Component{
   resetQuiz = () => {
     this.setState((prevState)=>({
       numberCorrect: 0,
-      cards: cards,
       curCardIndex: 0
     }))
   }
@@ -65,8 +39,10 @@ class Quiz extends React.Component{
   }
 
   renderCurCard = () => {
-    const { cards, curCardIndex, numberCorrect } = this.state
+    const { curCardIndex, numberCorrect } = this.state
     const { navigate } = this.props.navigation
+    const { cards } = this.props
+
 
     if(curCardIndex >= cards.length){
       return (
@@ -75,7 +51,7 @@ class Quiz extends React.Component{
             <H1>Quiz Completed!</H1>
             <H3>Score: {numberCorrect}/{cards.length / 2}</H3>
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Button rounded onPress={() => { navigate("Deck", {id: 1})}}>
+              <Button rounded onPress={() => { navigate("Deck", {id: this.props.deckId, title: this.props.title })}}>
                 <Text>Back To Deck</Text>
               </Button>
               <Button rounded onPress={this.resetQuiz.bind(this)}>
@@ -135,4 +111,14 @@ class Quiz extends React.Component{
   }
 }
 
-export default Quiz
+function mapStateToProps(state, ownProps){
+  const deckId = ownProps.navigation.state.params.id
+  const deck = state.decks[deckId]
+  return {
+    cards: deck.cards,
+    title: deck.title,
+    deckId: deckId 
+  }
+}
+
+export default connect(mapStateToProps)(Quiz)

@@ -42,7 +42,7 @@ export function setDefaultData () {
 }
 
 export function fetchDecks() {
-  AsyncStorage.clear()
+  // AsyncStorage.clear()
   return AsyncStorage.getItem(DECK_STORAGE_KEY)
           .then((results) => {
             return results === null

@@ -8,7 +8,21 @@ function decks(state={}, action){
       }
     case ADD_DECK :
       return {
-        decks: [...state.decks, action.deck]
+        decks: {
+          ...state.decks,
+          ...action.deck
+        }
+      }
+    case ADD_CARD :
+      debugger
+      return {
+        decks: {
+          ...state.decks,
+          [action.deckId]:{
+            ...state.decks[action.deckId],
+            cards: [...state.decks[action.deckId].cards, ...action.newCard.cards]
+          }
+        }
       }
     default :
       return state

@@ -12,6 +12,9 @@ import HomeScreen from './components/HomeScreen'
 import NewCard from './components/NewCard'
 import Quiz from './components/Quiz'
 import NewDeck from './components/NewDeck'
+// import middleware from './middleware'
+import thunk from 'redux-thunk'
+import { applyMiddleware } from 'redux'
 
 
 const MainNavigator = createStackNavigator(
@@ -30,7 +33,7 @@ const MainNavigator = createStackNavigator(
 export default class App extends React.Component {
   render() {
     return (
-      <Provider store={createStore(reducer)}>
+      <Provider store={createStore(reducer, applyMiddleware(thunk))}>
         <Fragment>
           <MainNavigator/>
         </Fragment>

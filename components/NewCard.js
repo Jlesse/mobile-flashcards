@@ -1,8 +1,10 @@
 import React from 'react'
-
+import { connect } from 'react-redux'
 import { Container, Header, Content, Textarea, Form, Label, Button, Text, Right} from "native-base";
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { StyleSheet } from 'react-native'
+import { QUESTION, ANSWER } from '../utils/api'
+import { addCard } from '../actions/index'
 
 
 class NewCard extends React.Component{
@@ -11,8 +13,10 @@ class NewCard extends React.Component{
     question: '',
   }
 
-  static navigationOptions = {
-    title: "New Card for Deck 1"
+  static navigationOptions = ({navigation}) => {
+    return {
+      title: navigation.state.params.title
+    }
   }
 
   handleChangeText = (text, key) => {
@@ -23,8 +27,19 @@ class NewCard extends React.Component{
   }
 
   handleSubmit = () => {
-    //do some some stuff with redux
-    this.props.navigation.navigate("Deck", {id: 1})
+    const deckId = this.props.deckId
+    newCard = { deckId: deckId,
+                card: [{
+                  header: QUESTION,
+                  text: this.state.question
+                },
+                {
+                  Header: ANSWER,
+                  text: this.state.answer
+                }]
+              }
+    this.props.dispatch(addCard(newCard))
+    this.props.navigation.navigate.navigate("Deck", {id: deckId})
   }
 
   render(){
@@ -54,11 +69,25 @@ class NewCard extends React.Component{
   }
 }
 
+function mapDispatchToProps(dispatch){
+  return { dispatch }
+}
 
-// const styles = StyleSheet.create({
-//   submit: {
-//     margin: 40,
-//   },
-// })
+function mapStateToProps(state, ownProps){
+  const deckId = ownProps.navigation.state.params.id
+  const deck = state.decks[deckId]
+  return {
+    title: deck.title,
+    deckId: deckId 
+  } 
+}
 
-export default NewCard
+// function mapStateToProps(state, ownProps){
+//   const deckId = ownProps.navigation.state.params.id
+//   const deck = state.decks[deckId]
+//   return {
+//     deck
+//   }
+// }
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewCard)

@@ -1,9 +1,10 @@
 import React from 'react'
-
+import { connect } from 'react-redux'
 import { Container, Header, Content, Input, Item, Form, Label, Button, Text, Right} from "native-base";
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { StyleSheet } from 'react-native'
-
+import { addDeck } from '../actions/index'
+import { generateUID } from '../utils/api'
 
 class NewDeck extends React.Component{
   state = {
@@ -21,8 +22,15 @@ class NewDeck extends React.Component{
   }
 
   handleSubmit = () => {
-    //do some some stuff with redux
-    this.props.navigation.navigate("Deck", {id: 1})
+    const id = generateUID()
+    const deck ={ 
+      [id]: {
+        title: this.state.title,
+        cards: []
+      }
+    }
+    this.props.dispatch(addDeck(deck))
+    this.props.navigation.navigate("Deck", {id: id, title: this.state.title})
   }
 
   render(){
@@ -51,6 +59,10 @@ class NewDeck extends React.Component{
   }
 }
 
+function mapDispatchToProps(dispatch){
+  return { dispatch }
+}
+
 
 // const styles = StyleSheet.create({
 //   submit: {
@@ -58,4 +70,4 @@ class NewDeck extends React.Component{
 //   },
 // })
 
-export default NewDeck
+export default connect(null, mapDispatchToProps)(NewDeck)

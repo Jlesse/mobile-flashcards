@@ -27,14 +27,14 @@ class HomeScreen extends React.Component {
       <Container>
         <Content padder>
           <List>
-            <ListItem onPress={() => navigate("NewDeck")}>
+            <ListItem key='newDeck' onPress={() => navigate("NewDeck")}>
               <Ionicons name='md-add-circle' size={45}/>
               <Text> Add New Deck</Text>  
             </ListItem>
             {Object.keys(decks).map((id) => {
               const deck = decks[id]
               return(
-                <ListItem onPress={() => navigate("Deck", {id: id})}>
+                <ListItem key={id} onPress={() => navigate("Deck", {id: id, title: deck.title})}>
                   <Text>{`Name: ${deck.title} \nCards: ${deck.cards.length}`}</Text>
                 </ListItem>
               )
