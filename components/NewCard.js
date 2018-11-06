@@ -5,6 +5,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { StyleSheet } from 'react-native'
 import { QUESTION, ANSWER } from '../utils/api'
 import { addCard } from '../actions/index'
+import { storeDeck } from '../utils/api'
 
 
 class NewCard extends React.Component{
@@ -27,7 +28,7 @@ class NewCard extends React.Component{
   }
 
   handleSubmit = () => {
-    const deckId = this.props.deckId
+    const {deck, deckId } = this.props
     newCard = { deckId: deckId,
                 card: [{
                   header: QUESTION,
@@ -39,6 +40,9 @@ class NewCard extends React.Component{
                 }]
               }
     this.props.dispatch(addCard(newCard))
+
+    deck.cards = [...deck.cards, ...newCard.card]
+    storeDeck({[deckId]: deck})
     this.props.navigation.navigate("Deck", {id: deckId})
   }
 
@@ -78,7 +82,8 @@ function mapStateToProps(state, ownProps){
   const deck = state.decks[deckId]
   return {
     title: deck.title,
-    deckId: deckId 
+    deckId: deckId,
+    deck: deck
   } 
 }
 

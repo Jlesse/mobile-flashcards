@@ -4,7 +4,7 @@ import { Container, Header, Content, Input, Item, Form, Label, Button, Text, Rig
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { StyleSheet } from 'react-native'
 import { addDeck } from '../actions/index'
-import { generateUID } from '../utils/api'
+import { generateUID, storeDeck } from '../utils/api'
 
 class NewDeck extends React.Component{
   state = {
@@ -30,7 +30,9 @@ class NewDeck extends React.Component{
       }
     }
     this.props.dispatch(addDeck(deck))
+    storeDeck(deck)
     this.props.navigation.navigate("Deck", {id: id, title: this.state.title})
+    
   }
 
   render(){
@@ -62,6 +64,7 @@ class NewDeck extends React.Component{
 function mapDispatchToProps(dispatch){
   return { dispatch }
 }
+
 
 
 // const styles = StyleSheet.create({
