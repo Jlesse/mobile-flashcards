@@ -30,13 +30,15 @@ class Deck extends React.Component{
             <CardItem>
               <Grid>
                 <Col>
-                  <Button rounded success onPress={() => navigate("Quiz", { id: deckId, title: `${deck.title} Quiz` })}>
-                    <Text>Start Quiz</Text>
-                  </Button>
+                  { deck.cards.length > 0 ?
+                    (<Button rounded success onPress={() => navigate("Quiz", { id: deckId, title: `${deck.title} Quiz` })}>
+                      <Text>Start Quiz</Text>
+                    </Button>) : null
+                  }
                 </Col>
                 <Col>
                   <Button rounded primary onPress={() => navigate("NewCard", {id: deckId, title: `New Card for ${deck.title}`})}>
-                    <Text>New Card</Text>
+                    <Text>Add Card</Text>
                   </Button>
                 </Col>
               </Grid>

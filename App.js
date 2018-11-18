@@ -15,6 +15,33 @@ import NewDeck from './components/NewDeck'
 // import middleware from './middleware'
 import thunk from 'redux-thunk'
 import { applyMiddleware } from 'redux'
+import { setLocalNotification } from './utils/helpers'
+import { Easing, Animated } from 'react-native'
+
+
+
+const transitionConfig = () => {
+  return {
+    transitionSpec: {
+      duration: 750,
+      easing: Easing.out(Easing.poly(4)),
+      timing: Animated.timing,
+      useNativeDriver: true,
+    },
+    screenInterpolator: sceneProps => {      
+      const { position, scene } = sceneProps
+
+      const thisSceneIndex = scene.index
+
+      const opacity = position.interpolate({
+        inputRange: [thisSceneIndex - 1, thisSceneIndex],
+        outputRange: [0, 1],
+      })
+
+      return { opacity } 
+    },
+  }
+}
 
 
 const MainNavigator = createStackNavigator(
@@ -26,27 +53,43 @@ const MainNavigator = createStackNavigator(
     NewDeck: NewDeck
   },
   {
+    transitionConfig: () => ({
+      transitionSpec: {
+        duration: 500,
+        easing: Easing.out(Easing.poly(4)),
+        timing: Animated.timing,
+      },
+      screenInterpolator: sceneProps => {
+        const { position, scene } = sceneProps
+        const thisSceneIndex = scene.index
+        const opacity = position.interpolate({
+          inputRange: [thisSceneIndex - 1, thisSceneIndex],
+          outputRange: [0, 1],
+        })
+
+        return { opacity } 
+      }
+    })
+  },
+  {
     initialRouteName: 'Home',
-  }
+  },
 )
 
 export default class App extends React.Component {
+
+  componentDidMount(){
+    setLocalNotification()
+  }
+
+
   render() {
     return (
       <Provider store={createStore(reducer, applyMiddleware(thunk))}>
         <Fragment>
           <MainNavigator/>
-        </Fragment>
+        </Fragment>   
       </Provider>
     );
   }
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });

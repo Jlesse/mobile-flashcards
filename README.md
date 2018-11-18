@@ -1,0 +1,2 @@
+# Mobile Flashcards
+This is an a react native mobile app that allows a user to create flash cards and practice flash card quizes. If the user does no complete a quiz everyday, they will get a local notication at 8pm to remind them to complete a quiz. A lot of the styling was done with native base. This app has been tested on the xcode ios simuator iphone 5 and iphone 5 device with expo.

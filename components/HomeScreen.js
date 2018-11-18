@@ -1,5 +1,6 @@
 import React from 'react'
-import { Container, Header, Content, List, ListItem, Text, View, Body, Title } from 'native-base';
+import { Animated, View } from 'react-native'
+import { Container, Header, Content, List, ListItem, Text, Body, Title } from 'native-base';
 import { connect } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
 import { Col, Row, Grid } from 'react-native-easy-grid';
@@ -18,7 +19,6 @@ class HomeScreen extends React.Component {
         dispatch(receiveDecks(decks))
       })
   }
-
 
   render(){
     const { navigate } = this.props.navigation

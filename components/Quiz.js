@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { QUESTION, ANSWER } from '../utils/api'
 import { Container, Header, View, DeckSwiper, Card, CardItem, Thumbnail, Text, Left, Right, Body, Icon, Content, Button, H1, H3, Row, Col, Grid} from 'native-base'
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
 class Quiz extends React.Component{
  static navigationOptions = ({navigation}) => {
@@ -43,8 +44,9 @@ class Quiz extends React.Component{
     const { navigate } = this.props.navigation
     const { cards } = this.props
 
-
     if(curCardIndex >= cards.length){
+      clearLocalNotification()
+        .then(setLocalNotification())
       return (
         <View>
           <Body>

@@ -29,14 +29,17 @@ class NewCard extends React.Component{
 
   handleSubmit = () => {
     const {deck, deckId } = this.props
+    const num = (deck.cards.length / 2) + 1
     newCard = { deckId: deckId,
                 card: [{
                   header: QUESTION,
-                  text: this.state.question
+                  text: this.state.question,
+                  num: num,
                 },
                 {
                   Header: ANSWER,
-                  text: this.state.answer
+                  text: this.state.answer,
+                  num: num,
                 }]
               }
     this.props.dispatch(addCard(newCard))
